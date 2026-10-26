@@ -1,0 +1,597 @@
+@import "tailwindcss";
+
+/*
+ * Szabadi Sport Gravír: the colours of a trophy shelf. Graphite ink, ivory paper, a deep navy band like a medal ribbon, burgundy for the actions,
+ * brass gold for the thin lines, and an engraved laurel wreath as the one decorative motif. Token names are kept from the earlier shops so the shared shop / admin components keep working.
+ */
+:root {
+  --ink: #1a1c24; /* graphite */
+  --ink-2: #484b58; /* body text (8:1 on white) */
+  --paper: #f3efe6; /* ivory bands and image tiles */
+  --gold: #c8a24a; /* brass: thin lines, marks on dark */
+  --gold-dark: #7a5a14; /* brass as readable text on white */
+  --cream: #ffffff; /* cards, forms */
+  --mist: #d6d9e3; /* light text on dark */
+  --berry: #8a1f2b; /* burgundy: main buttons and links (9:1 on white) */
+  --red-bright: #e3c47a; /* brass on dark */
+  --moss: #3b5b8c;
+  --steel: #e5e1d6; /* tints */
+  --line: #d9d3c4; /* hairlines */
+  --pine: #172037; /* ribbon navy */
+  --bark: #5a4a2a;
+  --rose: #a63a45;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-paper: var(--paper);
+  --color-gold: var(--gold);
+  --color-gold-dark: var(--gold-dark);
+  --color-cream: var(--cream);
+  --color-mist: var(--mist);
+  --color-berry: var(--berry);
+  --color-red-bright: var(--red-bright);
+  --color-moss: var(--moss);
+  --color-steel: var(--steel);
+  --color-line: var(--line);
+  --shadow-card: 0 1px 2px rgba(26, 28, 36, 0.06), 0 10px 28px -12px rgba(26, 28, 36, 0.22);
+  --shadow-lift: 0 2px 4px rgba(26, 28, 36, 0.08), 0 18px 36px -14px rgba(26, 28, 36, 0.32);
+  --color-pine: var(--pine);
+  --color-bark: var(--bark);
+  --color-rose: var(--rose);
+  --font-sans: "Source Sans 3", "Source Sans 3 Fallback", system-ui, sans-serif;
+  --font-display: "Playfair Display", "Playfair Display Fallback", Georgia, serif;
+  --font-logo: "Cinzel", "Cinzel Fallback", Georgia, serif;
+}
+
+html {
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  scroll-padding-top: 150px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  overflow-x: clip;
+  background: #faf7f0;
+  color: var(--ink-2);
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 27px;
+  font-synthesis-weight: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* Keyboard focus that is visible on cream, white and navy */
+:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px var(--gold);
+  border-radius: 3px;
+}
+
+@layer components {
+.skip-link {
+  position: fixed;
+  left: 12px;
+  top: -80px;
+  z-index: 200;
+  background: var(--gold);
+  color: var(--ink);
+  padding: 12px 18px;
+  font-weight: 700;
+  border: 2px solid var(--ink);
+  border-radius: 6px;
+  transition: top 0.15s;
+}
+.skip-link:focus {
+  top: 12px;
+}
+
+.sr-only-live {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---------- Layout ---------- */
+.wrap {
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+@media (min-width: 768px) {
+  .wrap {
+    padding-inline: 32px;
+  }
+}
+
+/* Headlines: a warm book serif; the heavy slab stays in the logo only */
+.display {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  font-variation-settings: "SOFT" 60, "WONK" 0;
+  color: var(--ink);
+}
+.t-1 {
+  font-size: clamp(36px, 4.8vw, 60px);
+  line-height: 1.04;
+}
+.t-2 {
+  font-size: clamp(30px, 3.6vw, 44px);
+  line-height: 1.06;
+}
+.t-3 {
+  font-size: clamp(24px, 2.4vw, 30px);
+  line-height: 1.12;
+}
+
+/* a short label above a headline: a thin orange line and plain words */
+.kicker {
+  display: flex;
+  font-family: var(--font-sans);
+  letter-spacing: 0;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+  line-height: 20px;
+  font-weight: 700;
+  color: var(--gold-dark);
+}
+.kicker::before {
+  content: "";
+  width: 24px;
+  height: 1.5px;
+  flex: none;
+  background: var(--gold);
+  border-radius: 2px;
+}
+.on-dark .kicker {
+  color: var(--gold);
+}
+
+/* ---------- Header navigation ---------- */
+.nav-link {
+  display: flex;
+  align-items: center;
+  padding: 10px 11px;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 20px;
+  color: var(--ink);
+}
+.nav-link:hover,
+.nav-link[aria-current="page"] {
+  color: var(--berry);
+}
+
+/* page links of the header: an amber line grows under the hovered or current one */
+.top-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 44px;
+  padding: 0 12px;
+  white-space: nowrap;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--ink);
+}
+.top-link::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 6px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+.top-link:hover::after,
+.top-link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+.top-link:hover {
+  color: var(--berry);
+}
+
+/* ---------- Header cart indicator ---------- */
+.cart-pop {
+  animation: cart-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes cart-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.6) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.badge-bump {
+  animation: badge-bump 0.4s ease-out;
+}
+@keyframes badge-bump {
+  40% {
+    transform: scale(1.5);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .badge-bump {
+    animation: none;
+  }
+  .cart-pop {
+    animation: none;
+  }
+}
+
+/* scroll hint: soft shadows appear at the edge that has more content */
+.scroll-shadow {
+  background:
+    linear-gradient(#fff 30%, rgba(255, 255, 255, 0)) center top,
+    linear-gradient(rgba(255, 255, 255, 0), #fff 70%) center bottom,
+    radial-gradient(farthest-side at 50% 0, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0)) center top,
+    radial-gradient(farthest-side at 50% 100%, rgba(0, 0, 0, 0.22), rgba(0, 0, 0, 0)) center bottom;
+  background-repeat: no-repeat;
+  background-size: 100% 36px, 100% 36px, 100% 12px, 100% 12px;
+  background-attachment: local, local, scroll, scroll;
+}
+
+/* ---------- Admin interface ---------- */
+.toast-in {
+  animation: toast-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+}
+.edit-pop {
+  animation: edit-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes edit-pop {
+  from {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+}
+.admin-badge {
+  animation: admin-pulse 1.8s ease-in-out infinite;
+}
+@keyframes admin-pulse {
+  50% {
+    transform: scale(1.18);
+  }
+}
+.admin-expand {
+  animation: admin-expand 0.28s ease-out both;
+}
+@keyframes admin-expand {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .toast-in,
+  .edit-pop,
+  .admin-badge,
+  .admin-expand {
+    animation: none;
+  }
+}
+
+/* ---------- Buttons ---------- */
+.btn-outline,
+.btn-gold,
+.btn-red,
+.btn-ink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  padding: 11px 22px;
+  font-size: 16.5px;
+  line-height: 22px;
+  font-weight: 700;
+  text-align: center;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s, transform 0.08s, box-shadow 0.15s;
+}
+.btn-outline {
+  color: var(--ink);
+  border-color: var(--ink);
+  background: transparent;
+}
+.btn-outline:hover {
+  background: var(--ink);
+  color: #fff;
+}
+/* the main action: eosin teal; gold on dark backgrounds */
+.btn-red {
+  background: var(--berry);
+  color: #fff;
+  box-shadow: 0 1px 0 rgba(26, 28, 36, 0.25), 0 6px 14px -8px rgba(27, 61, 43, 0.7);
+}
+.btn-red:hover {
+  background: #1b3d2b;
+}
+.btn-gold {
+  background: var(--gold);
+  color: var(--ink);
+}
+.btn-gold:hover {
+  background: #e8b24a;
+}
+.btn-red:active,
+.btn-gold:active {
+  transform: translateY(1px);
+}
+.btn-ink {
+  background: var(--ink);
+  color: #fff;
+}
+.btn-ink:hover {
+  background: #4a3a2a;
+}
+.on-dark .btn-outline {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.7);
+}
+.on-dark .btn-outline:hover {
+  background: #fff;
+  color: var(--ink);
+}
+.btn-red:disabled,
+.btn-gold:disabled,
+.btn-ink:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.field {
+  width: 100%;
+  border: 1px solid #8f8777;
+  background: #fff;
+  padding: 10px 13px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 17px;
+  line-height: 22px;
+  color: var(--ink);
+}
+.field:focus {
+  border-color: var(--ink);
+}
+select.field {
+  appearance: auto;
+}
+
+/* ---------- Timber vocabulary ---------- */
+
+/* a photo on a white tile, lifted a little like a piece on a shelf */
+.cover {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: var(--shadow-card);
+}
+
+/* the price: plain and bold */
+.price-tag {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  font-size: 21px;
+  line-height: 26px;
+  font-weight: 800;
+  color: var(--ink);
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.price-tag.sale {
+  color: var(--rose);
+}
+
+/* small status labels */
+.label {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 5px;
+  font-size: 13px;
+  line-height: 18px;
+  font-weight: 800;
+  background: #f4e4c4;
+  color: var(--ink);
+}
+
+/* the data strip of a piece: condition, material, size */
+.box-strip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 16px;
+  align-items: center;
+  color: var(--ink-2);
+  font-weight: 700;
+}
+.box-strip > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.list-square {
+  list-style-type: square;
+}
+
+/* ---------- progress bar of the result list ---------- */
+.progress-slide {
+  animation: progress-slide 1s ease-in-out infinite;
+}
+@keyframes progress-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .progress-slide {
+    animation: none;
+    width: 100%;
+  }
+}
+
+/* ---------- Carousel ---------- */
+.snap-row {
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+}
+.snap-row::-webkit-scrollbar {
+  display: none;
+}
+.snap-row > * {
+  scroll-snap-align: start;
+}
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+
+/* growth rings of a log (end grain): concentric, slightly uneven, very low contrast */
+.rings {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%20300%20300%27%3E%3Cg%20fill=%27none%27%20stroke=%27%23b8924a%27%20stroke-opacity=%270.55%27%20stroke-width=%271.7%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M138.3%20261.4%20A112%20112%200%200%201%20138.3%2038.6%27/%3E%3Cellipse%20cx=%27121.0%27%20cy=%27266.4%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-218.0%20121.0%20266.4)%27/%3E%3Cellipse%20cx=%27124.8%27%20cy=%27250.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-294.0%20124.8%20250.9)%27/%3E%3Cellipse%20cx=%2793.7%27%20cy=%27256.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-204.0%2093.7%20256.0)%27/%3E%3Cellipse%20cx=%27101.2%27%20cy=%27241.8%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-280.0%20101.2%20241.8)%27/%3E%3Cellipse%20cx=%2769.7%27%20cy=%27239.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-190.0%2069.7%20239.2)%27/%3E%3Cellipse%20cx=%2780.4%27%20cy=%27227.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-266.0%2080.4%20227.3)%27/%3E%3Cellipse%20cx=%2750.5%27%20cy=%27217.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-176.0%2050.5%20217.1)%27/%3E%3Cellipse%20cx=%2763.8%27%20cy=%27208.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-252.0%2063.8%20208.2)%27/%3E%3Cellipse%20cx=%2737.2%27%20cy=%27191.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-162.0%2037.2%20191.0)%27/%3E%3Cellipse%20cx=%2752.3%27%20cy=%27185.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-238.0%2052.3%20185.6)%27/%3E%3Cellipse%20cx=%2730.7%27%20cy=%27162.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-148.0%2030.7%20162.5)%27/%3E%3Cellipse%20cx=%2746.6%27%20cy=%27160.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-224.0%2046.6%20160.9)%27/%3E%3Cellipse%20cx=%2731.2%27%20cy=%27133.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-134.0%2031.2%20133.3)%27/%3E%3Cellipse%20cx=%2747.0%27%20cy=%27135.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-210.0%2047.0%20135.5)%27/%3E%3Cellipse%20cx=%2738.7%27%20cy=%27105.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-120.0%2038.7%20105.0)%27/%3E%3Cellipse%20cx=%2753.6%27%20cy=%27111.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-196.0%2053.6%20111.0)%27/%3E%3Cellipse%20cx=%2752.9%27%20cy=%2779.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-106.0%2052.9%2079.5)%27/%3E%3Cellipse%20cx=%2765.9%27%20cy=%2788.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-182.0%2065.9%2088.9)%27/%3E%3Cellipse%20cx=%2772.9%27%20cy=%2758.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-92.0%2072.9%2058.1)%27/%3E%3Cellipse%20cx=%2783.2%27%20cy=%2770.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-168.0%2083.2%2070.3)%27/%3E%3Cellipse%20cx=%2797.4%27%20cy=%2742.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-78.0%2097.4%2042.1)%27/%3E%3Cellipse%20cx=%27104.4%27%20cy=%2756.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-154.0%20104.4%2056.5)%27/%3E%3Cellipse%20cx=%27125.1%27%20cy=%2732.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-64.0%20125.1%2032.6)%27/%3E%3Cellipse%20cx=%27128.4%27%20cy=%2748.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-140.0%20128.4%2048.3)%27/%3E%3Cpath%20d=%27M161.7%20261.4%20A112%20112%200%200%200%20161.7%2038.6%27/%3E%3Cellipse%20cx=%27179.0%27%20cy=%27266.4%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-66.0%20179.0%20266.4)%27/%3E%3Cellipse%20cx=%27175.2%27%20cy=%27250.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-142.0%20175.2%20250.9)%27/%3E%3Cellipse%20cx=%27206.3%27%20cy=%27256.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-80.0%20206.3%20256.0)%27/%3E%3Cellipse%20cx=%27198.8%27%20cy=%27241.8%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-156.0%20198.8%20241.8)%27/%3E%3Cellipse%20cx=%27230.3%27%20cy=%27239.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-94.0%20230.3%20239.2)%27/%3E%3Cellipse%20cx=%27219.6%27%20cy=%27227.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-170.0%20219.6%20227.3)%27/%3E%3Cellipse%20cx=%27249.5%27%20cy=%27217.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-108.0%20249.5%20217.1)%27/%3E%3Cellipse%20cx=%27236.2%27%20cy=%27208.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-184.0%20236.2%20208.2)%27/%3E%3Cellipse%20cx=%27262.8%27%20cy=%27191.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-122.0%20262.8%20191.0)%27/%3E%3Cellipse%20cx=%27247.7%27%20cy=%27185.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-198.0%20247.7%20185.6)%27/%3E%3Cellipse%20cx=%27269.3%27%20cy=%27162.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-136.0%20269.3%20162.5)%27/%3E%3Cellipse%20cx=%27253.4%27%20cy=%27160.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-212.0%20253.4%20160.9)%27/%3E%3Cellipse%20cx=%27268.8%27%20cy=%27133.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-150.0%20268.8%20133.3)%27/%3E%3Cellipse%20cx=%27253.0%27%20cy=%27135.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-226.0%20253.0%20135.5)%27/%3E%3Cellipse%20cx=%27261.3%27%20cy=%27105.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-164.0%20261.3%20105.0)%27/%3E%3Cellipse%20cx=%27246.4%27%20cy=%27111.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-240.0%20246.4%20111.0)%27/%3E%3Cellipse%20cx=%27247.1%27%20cy=%2779.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-178.0%20247.1%2079.5)%27/%3E%3Cellipse%20cx=%27234.1%27%20cy=%2788.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-254.0%20234.1%2088.9)%27/%3E%3Cellipse%20cx=%27227.1%27%20cy=%2758.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-192.0%20227.1%2058.1)%27/%3E%3Cellipse%20cx=%27216.8%27%20cy=%2770.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-268.0%20216.8%2070.3)%27/%3E%3Cellipse%20cx=%27202.6%27%20cy=%2742.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-206.0%20202.6%2042.1)%27/%3E%3Cellipse%20cx=%27195.6%27%20cy=%2756.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-282.0%20195.6%2056.5)%27/%3E%3Cellipse%20cx=%27174.9%27%20cy=%2732.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-220.0%20174.9%2032.6)%27/%3E%3Cellipse%20cx=%27171.6%27%20cy=%2748.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-296.0%20171.6%2048.3)%27/%3E%3Cpath%20d=%27M150%20262v18M142%20280h16%27%20stroke-width=%271.4%27/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 380px;
+  background-position: right 20px center;
+}
+.rings-dark {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%20300%20300%27%3E%3Cg%20fill=%27none%27%20stroke=%27%23c8a24a%27%20stroke-opacity=%270.30%27%20stroke-width=%271.7%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M138.3%20261.4%20A112%20112%200%200%201%20138.3%2038.6%27/%3E%3Cellipse%20cx=%27121.0%27%20cy=%27266.4%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-218.0%20121.0%20266.4)%27/%3E%3Cellipse%20cx=%27124.8%27%20cy=%27250.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-294.0%20124.8%20250.9)%27/%3E%3Cellipse%20cx=%2793.7%27%20cy=%27256.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-204.0%2093.7%20256.0)%27/%3E%3Cellipse%20cx=%27101.2%27%20cy=%27241.8%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-280.0%20101.2%20241.8)%27/%3E%3Cellipse%20cx=%2769.7%27%20cy=%27239.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-190.0%2069.7%20239.2)%27/%3E%3Cellipse%20cx=%2780.4%27%20cy=%27227.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-266.0%2080.4%20227.3)%27/%3E%3Cellipse%20cx=%2750.5%27%20cy=%27217.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-176.0%2050.5%20217.1)%27/%3E%3Cellipse%20cx=%2763.8%27%20cy=%27208.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-252.0%2063.8%20208.2)%27/%3E%3Cellipse%20cx=%2737.2%27%20cy=%27191.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-162.0%2037.2%20191.0)%27/%3E%3Cellipse%20cx=%2752.3%27%20cy=%27185.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-238.0%2052.3%20185.6)%27/%3E%3Cellipse%20cx=%2730.7%27%20cy=%27162.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-148.0%2030.7%20162.5)%27/%3E%3Cellipse%20cx=%2746.6%27%20cy=%27160.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-224.0%2046.6%20160.9)%27/%3E%3Cellipse%20cx=%2731.2%27%20cy=%27133.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-134.0%2031.2%20133.3)%27/%3E%3Cellipse%20cx=%2747.0%27%20cy=%27135.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-210.0%2047.0%20135.5)%27/%3E%3Cellipse%20cx=%2738.7%27%20cy=%27105.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-120.0%2038.7%20105.0)%27/%3E%3Cellipse%20cx=%2753.6%27%20cy=%27111.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-196.0%2053.6%20111.0)%27/%3E%3Cellipse%20cx=%2752.9%27%20cy=%2779.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-106.0%2052.9%2079.5)%27/%3E%3Cellipse%20cx=%2765.9%27%20cy=%2788.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-182.0%2065.9%2088.9)%27/%3E%3Cellipse%20cx=%2772.9%27%20cy=%2758.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-92.0%2072.9%2058.1)%27/%3E%3Cellipse%20cx=%2783.2%27%20cy=%2770.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-168.0%2083.2%2070.3)%27/%3E%3Cellipse%20cx=%2797.4%27%20cy=%2742.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-78.0%2097.4%2042.1)%27/%3E%3Cellipse%20cx=%27104.4%27%20cy=%2756.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-154.0%20104.4%2056.5)%27/%3E%3Cellipse%20cx=%27125.1%27%20cy=%2732.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-64.0%20125.1%2032.6)%27/%3E%3Cellipse%20cx=%27128.4%27%20cy=%2748.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-140.0%20128.4%2048.3)%27/%3E%3Cpath%20d=%27M161.7%20261.4%20A112%20112%200%200%200%20161.7%2038.6%27/%3E%3Cellipse%20cx=%27179.0%27%20cy=%27266.4%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-66.0%20179.0%20266.4)%27/%3E%3Cellipse%20cx=%27175.2%27%20cy=%27250.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-142.0%20175.2%20250.9)%27/%3E%3Cellipse%20cx=%27206.3%27%20cy=%27256.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-80.0%20206.3%20256.0)%27/%3E%3Cellipse%20cx=%27198.8%27%20cy=%27241.8%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-156.0%20198.8%20241.8)%27/%3E%3Cellipse%20cx=%27230.3%27%20cy=%27239.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-94.0%20230.3%20239.2)%27/%3E%3Cellipse%20cx=%27219.6%27%20cy=%27227.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-170.0%20219.6%20227.3)%27/%3E%3Cellipse%20cx=%27249.5%27%20cy=%27217.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-108.0%20249.5%20217.1)%27/%3E%3Cellipse%20cx=%27236.2%27%20cy=%27208.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-184.0%20236.2%20208.2)%27/%3E%3Cellipse%20cx=%27262.8%27%20cy=%27191.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-122.0%20262.8%20191.0)%27/%3E%3Cellipse%20cx=%27247.7%27%20cy=%27185.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-198.0%20247.7%20185.6)%27/%3E%3Cellipse%20cx=%27269.3%27%20cy=%27162.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-136.0%20269.3%20162.5)%27/%3E%3Cellipse%20cx=%27253.4%27%20cy=%27160.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-212.0%20253.4%20160.9)%27/%3E%3Cellipse%20cx=%27268.8%27%20cy=%27133.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-150.0%20268.8%20133.3)%27/%3E%3Cellipse%20cx=%27253.0%27%20cy=%27135.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-226.0%20253.0%20135.5)%27/%3E%3Cellipse%20cx=%27261.3%27%20cy=%27105.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-164.0%20261.3%20105.0)%27/%3E%3Cellipse%20cx=%27246.4%27%20cy=%27111.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-240.0%20246.4%20111.0)%27/%3E%3Cellipse%20cx=%27247.1%27%20cy=%2779.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-178.0%20247.1%2079.5)%27/%3E%3Cellipse%20cx=%27234.1%27%20cy=%2788.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-254.0%20234.1%2088.9)%27/%3E%3Cellipse%20cx=%27227.1%27%20cy=%2758.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-192.0%20227.1%2058.1)%27/%3E%3Cellipse%20cx=%27216.8%27%20cy=%2770.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-268.0%20216.8%2070.3)%27/%3E%3Cellipse%20cx=%27202.6%27%20cy=%2742.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-206.0%20202.6%2042.1)%27/%3E%3Cellipse%20cx=%27195.6%27%20cy=%2756.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-282.0%20195.6%2056.5)%27/%3E%3Cellipse%20cx=%27174.9%27%20cy=%2732.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-220.0%20174.9%2032.6)%27/%3E%3Cellipse%20cx=%27171.6%27%20cy=%2748.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-296.0%20171.6%2048.3)%27/%3E%3Cpath%20d=%27M150%20262v18M142%20280h16%27%20stroke-width=%271.4%27/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 560px;
+  background-position: left -140px bottom -230px;
+}
+/* the product menu pane: a few rings low in the corner, behind the photo, far from the text */
+.rings-pane {
+  background-image: url("data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20viewBox=%270%200%20300%20300%27%3E%3Cg%20fill=%27none%27%20stroke=%27%23b8924a%27%20stroke-opacity=%270.5%27%20stroke-width=%271.7%27%20stroke-linecap=%27round%27%20stroke-linejoin=%27round%27%3E%3Cpath%20d=%27M138.3%20261.4%20A112%20112%200%200%201%20138.3%2038.6%27/%3E%3Cellipse%20cx=%27121.0%27%20cy=%27266.4%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-218.0%20121.0%20266.4)%27/%3E%3Cellipse%20cx=%27124.8%27%20cy=%27250.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-294.0%20124.8%20250.9)%27/%3E%3Cellipse%20cx=%2793.7%27%20cy=%27256.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-204.0%2093.7%20256.0)%27/%3E%3Cellipse%20cx=%27101.2%27%20cy=%27241.8%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-280.0%20101.2%20241.8)%27/%3E%3Cellipse%20cx=%2769.7%27%20cy=%27239.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-190.0%2069.7%20239.2)%27/%3E%3Cellipse%20cx=%2780.4%27%20cy=%27227.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-266.0%2080.4%20227.3)%27/%3E%3Cellipse%20cx=%2750.5%27%20cy=%27217.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-176.0%2050.5%20217.1)%27/%3E%3Cellipse%20cx=%2763.8%27%20cy=%27208.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-252.0%2063.8%20208.2)%27/%3E%3Cellipse%20cx=%2737.2%27%20cy=%27191.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-162.0%2037.2%20191.0)%27/%3E%3Cellipse%20cx=%2752.3%27%20cy=%27185.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-238.0%2052.3%20185.6)%27/%3E%3Cellipse%20cx=%2730.7%27%20cy=%27162.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-148.0%2030.7%20162.5)%27/%3E%3Cellipse%20cx=%2746.6%27%20cy=%27160.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-224.0%2046.6%20160.9)%27/%3E%3Cellipse%20cx=%2731.2%27%20cy=%27133.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-134.0%2031.2%20133.3)%27/%3E%3Cellipse%20cx=%2747.0%27%20cy=%27135.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-210.0%2047.0%20135.5)%27/%3E%3Cellipse%20cx=%2738.7%27%20cy=%27105.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-120.0%2038.7%20105.0)%27/%3E%3Cellipse%20cx=%2753.6%27%20cy=%27111.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-196.0%2053.6%20111.0)%27/%3E%3Cellipse%20cx=%2752.9%27%20cy=%2779.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-106.0%2052.9%2079.5)%27/%3E%3Cellipse%20cx=%2765.9%27%20cy=%2788.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-182.0%2065.9%2088.9)%27/%3E%3Cellipse%20cx=%2772.9%27%20cy=%2758.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-92.0%2072.9%2058.1)%27/%3E%3Cellipse%20cx=%2783.2%27%20cy=%2770.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-168.0%2083.2%2070.3)%27/%3E%3Cellipse%20cx=%2797.4%27%20cy=%2742.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-78.0%2097.4%2042.1)%27/%3E%3Cellipse%20cx=%27104.4%27%20cy=%2756.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-154.0%20104.4%2056.5)%27/%3E%3Cellipse%20cx=%27125.1%27%20cy=%2732.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-64.0%20125.1%2032.6)%27/%3E%3Cellipse%20cx=%27128.4%27%20cy=%2748.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-140.0%20128.4%2048.3)%27/%3E%3Cpath%20d=%27M161.7%20261.4%20A112%20112%200%200%200%20161.7%2038.6%27/%3E%3Cellipse%20cx=%27179.0%27%20cy=%27266.4%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-66.0%20179.0%20266.4)%27/%3E%3Cellipse%20cx=%27175.2%27%20cy=%27250.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-142.0%20175.2%20250.9)%27/%3E%3Cellipse%20cx=%27206.3%27%20cy=%27256.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-80.0%20206.3%20256.0)%27/%3E%3Cellipse%20cx=%27198.8%27%20cy=%27241.8%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-156.0%20198.8%20241.8)%27/%3E%3Cellipse%20cx=%27230.3%27%20cy=%27239.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-94.0%20230.3%20239.2)%27/%3E%3Cellipse%20cx=%27219.6%27%20cy=%27227.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-170.0%20219.6%20227.3)%27/%3E%3Cellipse%20cx=%27249.5%27%20cy=%27217.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-108.0%20249.5%20217.1)%27/%3E%3Cellipse%20cx=%27236.2%27%20cy=%27208.2%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-184.0%20236.2%20208.2)%27/%3E%3Cellipse%20cx=%27262.8%27%20cy=%27191.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-122.0%20262.8%20191.0)%27/%3E%3Cellipse%20cx=%27247.7%27%20cy=%27185.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-198.0%20247.7%20185.6)%27/%3E%3Cellipse%20cx=%27269.3%27%20cy=%27162.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-136.0%20269.3%20162.5)%27/%3E%3Cellipse%20cx=%27253.4%27%20cy=%27160.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-212.0%20253.4%20160.9)%27/%3E%3Cellipse%20cx=%27268.8%27%20cy=%27133.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-150.0%20268.8%20133.3)%27/%3E%3Cellipse%20cx=%27253.0%27%20cy=%27135.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-226.0%20253.0%20135.5)%27/%3E%3Cellipse%20cx=%27261.3%27%20cy=%27105.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-164.0%20261.3%20105.0)%27/%3E%3Cellipse%20cx=%27246.4%27%20cy=%27111.0%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-240.0%20246.4%20111.0)%27/%3E%3Cellipse%20cx=%27247.1%27%20cy=%2779.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-178.0%20247.1%2079.5)%27/%3E%3Cellipse%20cx=%27234.1%27%20cy=%2788.9%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-254.0%20234.1%2088.9)%27/%3E%3Cellipse%20cx=%27227.1%27%20cy=%2758.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-192.0%20227.1%2058.1)%27/%3E%3Cellipse%20cx=%27216.8%27%20cy=%2770.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-268.0%20216.8%2070.3)%27/%3E%3Cellipse%20cx=%27202.6%27%20cy=%2742.1%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-206.0%20202.6%2042.1)%27/%3E%3Cellipse%20cx=%27195.6%27%20cy=%2756.5%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-282.0%20195.6%2056.5)%27/%3E%3Cellipse%20cx=%27174.9%27%20cy=%2732.6%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-220.0%20174.9%2032.6)%27/%3E%3Cellipse%20cx=%27171.6%27%20cy=%2748.3%27%20rx=%273.8%27%20ry=%2710%27%20transform=%27rotate(-296.0%20171.6%2048.3)%27/%3E%3Cpath%20d=%27M150%20262v18M142%20280h16%27%20stroke-width=%271.4%27/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-size: 340px;
+  background-position: right -60px bottom -120px;
+}
+.board-edge {
+  height: 9px;
+  background: linear-gradient(var(--gold), var(--gold)) 0 2px / 100% 1px no-repeat, linear-gradient(var(--gold), var(--gold)) 0 6px / 100% 1px no-repeat, var(--pine);
+}
+
+
+/* ---------- page text (the original page HTML, cleaned) ---------- */
+.wp {
+  max-width: 78ch;
+  font-size: 17.5px;
+  line-height: 1.75;
+  color: var(--ink-2);
+  overflow-wrap: anywhere;
+}
+.wp > * + * {
+  margin-top: 1.05em;
+}
+.wp h2,
+.wp h3,
+.wp h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  color: var(--ink);
+  line-height: 1.22;
+  margin-top: 1.8em;
+}
+.wp h2 {
+  font-size: 30px;
+}
+.wp h3 {
+  font-size: 24px;
+}
+.wp h4 {
+  font-size: 20px;
+}
+.wp strong {
+  color: var(--ink);
+}
+.wp a {
+  color: var(--berry);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.wp ul,
+.wp ol {
+  padding-left: 1.4em;
+}
+.wp ul {
+  list-style: none;
+}
+.wp ul li {
+  position: relative;
+}
+.wp ul li::before {
+  content: "";
+  position: absolute;
+  left: -1.1em;
+  top: 0.72em;
+  width: 0.42em;
+  height: 0.42em;
+  transform: rotate(45deg);
+  background: var(--gold);
+}
+.wp ol {
+  list-style: decimal;
+}
+.wp li + li {
+  margin-top: 0.35em;
+}
+.wp img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 6px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+.wp img[style*="float"] {
+  margin: 0 0 0.6em 1.2em;
+}
+.wp iframe {
+  max-width: 100%;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}

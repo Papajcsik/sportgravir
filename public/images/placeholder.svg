@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600" role="img" aria-label="A termékhez még nincs fotó">
+  <rect width="600" height="600" fill="#f3efe6"/>
+  <g fill="none" stroke="#c8a24a" stroke-opacity=".5" stroke-width="3"><circle cx="300" cy="300" r="30"/><circle cx="300" cy="300" r="70"/><circle cx="300" cy="300" r="110"/><circle cx="300" cy="300" r="150"/><circle cx="300" cy="300" r="190"/><circle cx="300" cy="300" r="230"/></g>
+  <path d="M300 200l24 52 56 8-41 39 10 56-49-27-49 27 10-56-41-39 56-8z" fill="#172037" fill-opacity=".7"/>
+</svg>
